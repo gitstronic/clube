@@ -17,18 +17,20 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.Title:= 'Caixa Clube';
-  Application.Hint:= Application.Title;
+  Application.Hint:= Application.Title + ' - Sistema de Fluxo de Caixa integrado ao Secullum® ClubeNet®';
   Application.CreateForm(TDM,DM);
   frmSplash:= TfrmSplash.Create(Application);
   if(frmSplash.ShowModal=mrOk)
     then
       begin
         Application.CreateForm(TfrmLogin,frmLogin);
+        frmLogin.Caption:= 'Acesso ao Sistema';
         if(frmLogin.ShowModal=mrOk)
           then
             begin
               frmLogin.Free;
               Application.CreateForm(TfrmPrinc,frmPrinc);
+              frmPrinc.Caption:= Application.Title;
               frmSplash.Free;
               Application.Run;
             end

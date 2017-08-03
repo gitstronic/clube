@@ -67,6 +67,5 @@ object frmLogin: TfrmLogin
       item
         Width = 50
       end>
-    ExplicitTop = 167
   end
 end

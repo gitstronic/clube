@@ -57,6 +57,13 @@ begin
                   ModalResult:= mrOk;
                   User.id:= FieldByName('id').Value;
                   User.nome:= FieldByName('nome').Value;
+                end
+              else
+                begin
+                  STATUS.Panels[0].Text:= 'Usuário ou senha inválidos.';
+                  LOGIN.SetFocus;
+                  LOGIN.SelectAll;
+                  PASS.Clear;
                 end;
             Crypt:= nil;
           end;
