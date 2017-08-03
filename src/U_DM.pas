@@ -63,6 +63,14 @@ type
     aqyEmpresascriacao_data: TDateTimeField;
     aqyContasPagarempresa_id: TIntegerField;
     aqyEmpresasobs: TStringField;
+    aqyServicos: TADOQuery;
+    aqyServicosid: TAutoIncField;
+    aqyServicosdescricao: TStringField;
+    aqyPessoas: TADOQuery;
+    aqyPessoasid: TAutoIncField;
+    aqyPessoasn_identificador: TStringField;
+    aqyPessoasnome: TStringField;
+    aqyContasReceberservico_id: TIntegerField;
   private
     { Private declarations }
   public

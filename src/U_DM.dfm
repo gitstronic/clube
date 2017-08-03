@@ -198,13 +198,16 @@ object DM: TDM
     Parameters = <>
     SQL.Strings = (
       
-        'select id,pessoa_id,vencimento,valor,observacao,quitado,alteraca' +
-        'o_usu_id,alteracao_data from contas_receber')
+        'select id,servico_id,pessoa_id,vencimento,valor,observacao,quita' +
+        'do,alteracao_usu_id,alteracao_data from contas_receber')
     Left = 264
     Top = 56
     object aqyContasReceberid: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
+    end
+    object aqyContasReceberservico_id: TIntegerField
+      FieldName = 'servico_id'
     end
     object aqyContasReceberpessoa_id: TIntegerField
       FieldName = 'pessoa_id'
@@ -255,6 +258,43 @@ object DM: TDM
     end
     object aqyEmpresascriacao_data: TDateTimeField
       FieldName = 'criacao_data'
+    end
+  end
+  object aqyServicos: TADOQuery
+    Connection = adoConexao
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select id,descricao from servicos')
+    Left = 264
+    Top = 200
+    object aqyServicosid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object aqyServicosdescricao: TStringField
+      FieldName = 'descricao'
+      Size = 100
+    end
+  end
+  object aqyPessoas: TADOQuery
+    Connection = adoConexao
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select id,n_identificador,nome from pessoas')
+    Left = 264
+    Top = 248
+    object aqyPessoasid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object aqyPessoasn_identificador: TStringField
+      FieldName = 'n_identificador'
+    end
+    object aqyPessoasnome: TStringField
+      FieldName = 'nome'
+      Size = 100
     end
   end
 end

@@ -7,6 +7,10 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.DBGrids, Data.DB,
   Vcl.StdCtrls, Vcl.Buttons, Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Mask, Vcl.ActnList;
 
+type TCfg = record
+  Servico,Pessoa: integer;
+end;
+
 type
   TfrmPrinc = class(TForm)
     DSaldos: TDataSource;
@@ -29,6 +33,13 @@ type
     btnAtSaldo: TBitBtn;
     acnAtalhos: TActionList;
     acnAtualizaSaldo: TAction;
+    gbCfg: TGroupBox;
+    ledPessoa: TLabeledEdit;
+    btnSavePerson: TBitBtn;
+    dblServico: TDBLookupComboBox;
+    Label3: TLabel;
+    lblNome: TLabel;
+    DServico: TDataSource;
     procedure btnTransactionClick(Sender: TObject);
     procedure RefreshTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -39,13 +50,18 @@ type
     procedure FormResize(Sender: TObject);
     procedure btnAtSaldoClick(Sender: TObject);
     procedure acnAtualizaSaldoExecute(Sender: TObject);
+    procedure btnSavePersonClick(Sender: TObject);
+    procedure ledPessoaChange(Sender: TObject);
   private
     { Private declarations }
+    Cfg: TCfg;
     procedure EfetuarTransacao(ContaDebito,ContaCredito: integer; Valor: String);
     procedure AtualizaSaldo;
     function FNumD(Texto, VKey: String; Espaco, Decimal: Integer): String;
     function GetSaldo(id: integer): Real;
-    function GetEmpresaId(dbl : TDBLookupCombobox): integer;
+    function GetEmpresaId: integer;
+    function LoadCfg(Arquivo: String): TCfg;
+    procedure SaveCfg(Arquivo: String);
   public
     { Public declarations }
   end;
@@ -57,7 +73,7 @@ implementation
 
 {$R *.dfm}
 
-uses U_DM;
+uses U_DM, IniFiles;
 
 procedure TfrmPrinc.acnAtualizaSaldoExecute(Sender: TObject);
 begin
@@ -86,6 +102,14 @@ end;
 procedure TfrmPrinc.btnAtSaldoClick(Sender: TObject);
 begin
   AtualizaSaldo;
+end;
+
+procedure TfrmPrinc.btnSavePersonClick(Sender: TObject);
+begin
+  Cfg.Servico:= dblServico.KeyValue;
+  Cfg.Pessoa:= DM.aqyPessoas.FieldByName('id').Value;
+  SaveCFG('CCConfig.ini');
+  gbCfg.Visible:= False;
 end;
 
 procedure TfrmPrinc.btnTransactionClick(Sender: TObject);
@@ -164,8 +188,8 @@ begin
                   begin
                     Open;
                     Insert;
-                    FieldByName('empresa_id').Value:= GetEmpresaId(dblContaCredito);
-                    FieldByName('observacao').Value:= 'Transferência para Conta:' + dblContaCredito.Text;
+                    FieldByName('empresa_id').Value:= GetEmpresaId;
+                    FieldByName('observacao').Value:= dblContaCredito.Text;
                     FieldByName('previsao_data').Value:= now;
                     FieldByName('previsao_valor').Value:= valFloat;
                     FieldByName('pagto_tipo').Value:= 0;
@@ -180,7 +204,8 @@ begin
                   begin
                     Open;
                     Insert;
-                    FieldByName('pessoa_id').Value:= 1485;
+                    FieldByName('servico_id').Value:= Cfg.Servico;
+                    FieldByName('pessoa_id').Value:= Cfg.Pessoa;
                     FieldByName('vencimento').Value:= now;
                     FieldByName('valor').Value:= valFloat;
                     FieldByName('observacao').Value:= ' Transferência da Conta:' + dblContaDebito.Text;
@@ -292,6 +317,22 @@ begin
       dblContaCredito.KeyValue:= FieldByName('id').Value;
     end;
   dblContaDebito.SetFocus;
+  Cfg:= LoadCFG('CCConfig.ini');
+  if((Cfg.Servico=0) or (Cfg.Pessoa=0))
+    then
+      begin
+        Application.MessageBox('Configuração incompleta, favor configurar as opções para o funcionamento correto do sistema!','Aviso!',MB_ICONWARNING + MB_OK);
+        gbCfg.Visible:= True;
+        with DM.aqyServicos do
+          begin
+            Close;
+            SQL.Clear;
+            SQl.Add('select id,descricao from servicos order by descricao');
+            Open;
+            First;
+            dblServico.KeyValue:= FieldByName('id').Value;
+          end;
+      end;
 end;
 
 function TfrmPrinc.GetSaldo(id: integer): Real;
@@ -306,13 +347,48 @@ begin
     end;
 end;
 
-function TfrmPrinc.GetEmpresaId(dbl: TDBLookupCombobox): integer;
+procedure TfrmPrinc.ledPessoaChange(Sender: TObject);
+begin
+  with DM.aqyPessoas do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add('select top(1) id,n_identificador,nome from pessoas where n_identificador like ' + Char(39) + ledPessoa.Text + '%' + Char(39));
+      Open;
+      lblNome.Caption:= FieldByName('nome').Text;
+    end;
+end;
+
+function TfrmPrinc.LoadCfg(Arquivo: String): TCfg;
+var
+  Ini: TIniFile;
+  Archive: String;
+  Gone: TCfg;
+begin
+  Archive:= ExtractFilePath(Application.ExeName) + Arquivo;
+  if(FileExists(Archive))
+    then
+      begin
+        Ini:= TIniFile.Create(Archive);
+        Gone.Servico:= Ini.ReadInteger('RECEBER','SERVICO',0);
+        Gone.Pessoa:= Ini.ReadInteger('RECEBER','PESSOA',0);
+        Result:= Gone;
+      end
+    else
+      begin
+        Gone.Servico:= 0;
+        Gone.Pessoa:= 0;
+        Result:= Gone;
+      end;
+end;
+
+function TfrmPrinc.GetEmpresaId: integer;
 begin
   with DM.aqyEmpresas do
     begin
       Close;
       SQL.Clear;
-      SQL.Add('select id,nome,obs,criacao_usu_id,criacao_data from empresas where obs=' + IntToStr(dbl.KeyValue));
+      SQL.Add('select id,nome,obs,criacao_usu_id,criacao_data from empresas where obs=1');
       Open;
       if(RecordCount=1)
         then Result:= FieldByName('id').Value
@@ -323,8 +399,8 @@ begin
               else
                 begin
                   Insert;
-                  FieldByName('nome').Value:= 'Transferência para Conta:' + dbl.Text;
-                  FieldByName('obs').Value:= IntToStr(dbl.KeyValue);
+                  FieldByName('nome').Value:= 'Transferência para Conta';
+                  FieldByName('obs').Value:= 1;
                   FieldByName('criacao_usu_id').Value:= User.id;
                   FieldByName('criacao_data').Value:= now;
                   Post;
@@ -352,6 +428,20 @@ begin
       Close;
       Open;
     end;
+end;
+
+procedure TfrmPrinc.SaveCfg(Arquivo: String);
+var
+  Ini: TIniFile;
+  Archive: String;
+  Gone: TCfg;
+begin
+  Archive:= ExtractFilePath(Application.ExeName) + Arquivo;
+  Ini:= TIniFile.Create(Archive);
+  Ini.WriteInteger('RECEBER','SERVICO',Cfg.Servico);
+  Ini.WriteInteger('RECEBER','PESSOA',Cfg.Pessoa);
+  Ini.UpdateFile;
+  Ini.Free;
 end;
 
 end.

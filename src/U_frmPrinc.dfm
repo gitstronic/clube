@@ -177,6 +177,58 @@ object frmPrinc: TfrmPrinc
         end>
     end
   end
+  object gbCfg: TGroupBox
+    Left = 0
+    Top = 324
+    Width = 503
+    Height = 105
+    Caption = 'Configura'#231#245'es:'
+    TabOrder = 1
+    Visible = False
+    object Label3: TLabel
+      Left = 19
+      Top = 58
+      Width = 91
+      Height = 13
+      Caption = 'Servi'#231'o a Receber:'
+    end
+    object lblNome: TLabel
+      Left = 192
+      Top = 34
+      Width = 3
+      Height = 13
+    end
+    object ledPessoa: TLabeledEdit
+      Left = 19
+      Top = 31
+      Width = 167
+      Height = 21
+      EditLabel.Width = 154
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Identificador Pessoa a Receber:'
+      TabOrder = 0
+      OnChange = ledPessoaChange
+    end
+    object btnSavePerson: TBitBtn
+      Left = 414
+      Top = 72
+      Width = 75
+      Height = 25
+      Caption = 'Salvar'
+      TabOrder = 1
+      OnClick = btnSavePersonClick
+    end
+    object dblServico: TDBLookupComboBox
+      Left = 19
+      Top = 74
+      Width = 382
+      Height = 21
+      KeyField = 'id'
+      ListField = 'descricao'
+      ListSource = DServico
+      TabOrder = 2
+    end
+  end
   object DSaldos: TDataSource
     DataSet = DM.aqySaldos
     Left = 528
@@ -192,13 +244,18 @@ object frmPrinc: TfrmPrinc
     Top = 48
   end
   object acnAtalhos: TActionList
-    Left = 528
-    Top = 152
+    Left = 544
+    Top = 240
     object acnAtualizaSaldo: TAction
       Caption = 'acnAtualizaSaldo'
       SecondaryShortCuts.Strings = (
         'F5')
       OnExecute = acnAtualizaSaldoExecute
     end
+  end
+  object DServico: TDataSource
+    DataSet = DM.aqyServicos
+    Left = 528
+    Top = 144
   end
 end
