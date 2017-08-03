@@ -26,44 +26,13 @@ object frmPrinc: TfrmPrinc
     BiDiMode = bdLeftToRight
     ParentBiDiMode = False
     TabOrder = 0
-    object DBGrid1: TDBGrid
-      Left = 3
-      Top = 3
-      Width = 497
-      Height = 121
-      Color = clBtnFace
-      DataSource = DSaldos
-      DrawingStyle = gdsGradient
-      Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-      ReadOnly = True
-      TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'Tahoma'
-      TitleFont.Style = []
-      Columns = <
-        item
-          Expanded = False
-          FieldName = 'ContaCorrente'
-          Title.Caption = 'Conta Corrente'
-          Width = 274
-          Visible = True
-        end
-        item
-          Expanded = False
-          FieldName = 'Saldo'
-          Width = 200
-          Visible = True
-        end>
-    end
     object GroupBox2: TGroupBox
       Left = 3
       Top = 132
       Width = 497
       Height = 186
       Caption = 'Transa'#231#227'o entre contas:'
-      TabOrder = 1
+      TabOrder = 0
       object lblCDeb: TLabel
         Left = 16
         Top = 26
@@ -117,8 +86,8 @@ object frmPrinc: TfrmPrinc
         Top = 143
         Width = 150
         Height = 35
-        Caption = 'Efetuar Transa'#231#227'o!'
-        TabOrder = 2
+        Caption = 'Efetuar Transa'#231#227'o! [Enter]'
+        TabOrder = 3
         OnClick = btnTransactionClick
       end
       object edtValor: TEdit
@@ -128,7 +97,7 @@ object frmPrinc: TfrmPrinc
         Height = 21
         Alignment = taRightJustify
         MaxLength = 20
-        TabOrder = 3
+        TabOrder = 2
         Text = 'R$'
         OnEnter = edtValorEnter
         OnExit = edtValorExit
@@ -141,7 +110,7 @@ object frmPrinc: TfrmPrinc
         Height = 68
         Caption = 'Previs'#227'o de transa'#231#227'o:'
         Enabled = False
-        TabOrder = 4
+        TabOrder = 5
         object ledSaldoDebito: TLabeledEdit
           Left = 24
           Top = 32
@@ -167,27 +136,69 @@ object frmPrinc: TfrmPrinc
           TabOrder = 1
         end
       end
+      object btnAtSaldo: TBitBtn
+        Left = 11
+        Top = 143
+        Width = 150
+        Height = 35
+        Caption = 'Atualizar Saldos [F5]'
+        TabOrder = 4
+        OnClick = btnAtSaldoClick
+      end
+    end
+    object DBGrid1: TDBGrid
+      Left = 2
+      Top = 3
+      Width = 497
+      Height = 129
+      DataSource = DSaldos
+      DrawingStyle = gdsGradient
+      Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'ContaCorrente'
+          Title.Caption = 'Conta Corrente'
+          Width = 274
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Saldo'
+          Width = 200
+          Visible = True
+        end>
     end
   end
   object DSaldos: TDataSource
     DataSet = DM.aqySaldos
-    Left = 760
-    Top = 8
+    Left = 528
+    Top = 96
   end
   object DContaDebito: TDataSource
     DataSet = DM.aqyContaDebito
-    Left = 592
-    Top = 24
-  end
-  object Refresh: TTimer
-    Interval = 5000
-    OnTimer = RefreshTimer
-    Left = 712
-    Top = 32
+    Left = 528
   end
   object DContaCredito: TDataSource
     DataSet = DM.aqyContaCredito
-    Left = 624
-    Top = 80
+    Left = 528
+    Top = 48
+  end
+  object acnAtalhos: TActionList
+    Left = 528
+    Top = 152
+    object acnAtualizaSaldo: TAction
+      Caption = 'acnAtualizaSaldo'
+      SecondaryShortCuts.Strings = (
+        'F5')
+      OnExecute = acnAtualizaSaldoExecute
+    end
   end
 end

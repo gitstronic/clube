@@ -10,8 +10,8 @@ object DM: TDM
       'itial File Name="";Server SPN="";password="regis86"'
     LoginPrompt = False
     Provider = 'SQLNCLI11.1'
-    Left = 32
-    Top = 48
+    Left = 24
+    Top = 8
   end
   object aqyUsuarios: TADOQuery
     Connection = adoConexao
@@ -19,8 +19,8 @@ object DM: TDM
     Parameters = <>
     SQL.Strings = (
       'select id,nome,administrador,senha_entrada from Usuarios')
-    Left = 160
-    Top = 64
+    Left = 24
+    Top = 56
     object aqyUsuariosid: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
@@ -57,8 +57,8 @@ object DM: TDM
       
         'select c.id,c.ContaCorrente,(c.Credito-c.Debito) as Saldo from c' +
         ' order by c.id')
-    Left = 160
-    Top = 128
+    Left = 24
+    Top = 112
     object aqySaldosContaCorrente: TStringField
       FieldName = 'ContaCorrente'
       Size = 50
@@ -77,8 +77,8 @@ object DM: TDM
     Parameters = <>
     SQL.Strings = (
       'select id,descricao from contas_correntes')
-    Left = 200
-    Top = 232
+    Left = 136
+    Top = 8
     object aqyContaDebitoid: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
@@ -94,8 +94,8 @@ object DM: TDM
     Parameters = <>
     SQL.Strings = (
       'select id,descricao from contas_correntes')
-    Left = 328
-    Top = 224
+    Left = 136
+    Top = 56
     object AutoIncField1: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
@@ -111,14 +111,17 @@ object DM: TDM
     Parameters = <>
     SQL.Strings = (
       
-        'select id,observacao,previsao_data,previsao_valor,pagto_tipo,val' +
-        'or_total,vencimento,conta_corrente_id,alteracao_usu_id,alteracao' +
-        '_data from contas_pagar')
-    Left = 248
-    Top = 16
+        'select id,empresa_id,observacao,previsao_data,previsao_valor,pag' +
+        'to_tipo,valor_total,vencimento,conta_corrente_id,alteracao_usu_i' +
+        'd,alteracao_data from contas_pagar')
+    Left = 264
+    Top = 8
     object aqyContasPagarid: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
+    end
+    object aqyContasPagarempresa_id: TIntegerField
+      FieldName = 'empresa_id'
     end
     object aqyContasPagarobservacao: TStringField
       FieldName = 'observacao'
@@ -160,8 +163,8 @@ object DM: TDM
         'select id,conta_receber_id,pagto_data,pagto_valor,pagto_tipo,con' +
         'ta_corrente_id,alteracao_usu_id,alteracao_data from contas_receb' +
         'er_pagtos')
-    Left = 416
-    Top = 16
+    Left = 264
+    Top = 104
     object aqyContasReceberPagtosid: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
@@ -197,8 +200,8 @@ object DM: TDM
       
         'select id,pessoa_id,vencimento,valor,observacao,quitado,alteraca' +
         'o_usu_id,alteracao_data from contas_receber')
-    Left = 384
-    Top = 168
+    Left = 264
+    Top = 56
     object aqyContasReceberid: TAutoIncField
       FieldName = 'id'
       ReadOnly = True
@@ -225,6 +228,33 @@ object DM: TDM
     end
     object aqyContasReceberalteracao_data: TDateTimeField
       FieldName = 'alteracao_data'
+    end
+  end
+  object aqyEmpresas: TADOQuery
+    Connection = adoConexao
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select id,nome,obs,criacao_usu_id,criacao_data from empresas')
+    Left = 264
+    Top = 152
+    object aqyEmpresasid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object aqyEmpresasnome: TStringField
+      FieldName = 'nome'
+      Size = 100
+    end
+    object aqyEmpresasobs: TStringField
+      FieldName = 'obs'
+      Size = 50
+    end
+    object aqyEmpresascriacao_usu_id: TIntegerField
+      FieldName = 'criacao_usu_id'
+    end
+    object aqyEmpresascriacao_data: TDateTimeField
+      FieldName = 'criacao_data'
     end
   end
 end

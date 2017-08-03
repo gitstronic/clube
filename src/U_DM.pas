@@ -56,6 +56,13 @@ type
     aqySaldosContaCorrente: TStringField;
     aqySaldosSaldo: TFMTBCDField;
     aqyContasReceberpessoa_id: TIntegerField;
+    aqyEmpresas: TADOQuery;
+    aqyEmpresasid: TAutoIncField;
+    aqyEmpresasnome: TStringField;
+    aqyEmpresascriacao_usu_id: TIntegerField;
+    aqyEmpresascriacao_data: TDateTimeField;
+    aqyContasPagarempresa_id: TIntegerField;
+    aqyEmpresasobs: TStringField;
   private
     { Private declarations }
   public

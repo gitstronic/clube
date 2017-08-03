@@ -5,16 +5,14 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.DBGrids, Data.DB,
-  Vcl.StdCtrls, Vcl.Buttons, Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Mask;
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Mask, Vcl.ActnList;
 
 type
   TfrmPrinc = class(TForm)
     DSaldos: TDataSource;
     DContaDebito: TDataSource;
-    Refresh: TTimer;
     DContaCredito: TDataSource;
     GB: TGroupBox;
-    DBGrid1: TDBGrid;
     GroupBox2: TGroupBox;
     lblCDeb: TLabel;
     lblCCred: TLabel;
@@ -27,6 +25,10 @@ type
     GroupBox3: TGroupBox;
     ledSaldoDebito: TLabeledEdit;
     ledSaldoCredito: TLabeledEdit;
+    DBGrid1: TDBGrid;
+    btnAtSaldo: TBitBtn;
+    acnAtalhos: TActionList;
+    acnAtualizaSaldo: TAction;
     procedure btnTransactionClick(Sender: TObject);
     procedure RefreshTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -35,11 +37,15 @@ type
     procedure edtValorExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure btnAtSaldoClick(Sender: TObject);
+    procedure acnAtualizaSaldoExecute(Sender: TObject);
   private
     { Private declarations }
     procedure EfetuarTransacao(ContaDebito,ContaCredito: integer; Valor: String);
+    procedure AtualizaSaldo;
     function FNumD(Texto, VKey: String; Espaco, Decimal: Integer): String;
     function GetSaldo(id: integer): Real;
+    function GetEmpresaId(dbl : TDBLookupCombobox): integer;
   public
     { Public declarations }
   end;
@@ -53,6 +59,35 @@ implementation
 
 uses U_DM;
 
+procedure TfrmPrinc.acnAtualizaSaldoExecute(Sender: TObject);
+begin
+  btnAtSaldo.Click;
+end;
+
+procedure TfrmPrinc.AtualizaSaldo;
+begin
+  with DM.aqySaldos do
+    begin
+      Close;
+      Open;
+    end;
+  with Dm.aqyContaDebito do
+    begin
+      Close;
+      Open;
+    end;
+  with DM.aqyContaCredito do
+    begin
+      Close;
+      Open;
+    end;
+end;
+
+procedure TfrmPrinc.btnAtSaldoClick(Sender: TObject);
+begin
+  AtualizaSaldo;
+end;
+
 procedure TfrmPrinc.btnTransactionClick(Sender: TObject);
 begin
   if(Application.MessageBox(PChar('Deseja realmente transferir ' + Trim(edtValor.Text) + ' da Conta:"'
@@ -60,9 +95,8 @@ begin
     + '"? Essa operação não poderá ser desfeita.'),'Aviso!',MB_ICONWARNING + MB_YESNO)=IdYes)
     then
       begin
-        Refresh.Enabled:= False;
         EfetuarTransacao(dblContaDebito.KeyValue,dblContaCredito.KeyValue,edtValor.Text);
-        Refresh.Enabled:= True;
+        AtualizaSaldo;
       end;
 end;
 
@@ -130,6 +164,7 @@ begin
                   begin
                     Open;
                     Insert;
+                    FieldByName('empresa_id').Value:= GetEmpresaId(dblContaCredito);
                     FieldByName('observacao').Value:= 'Transferência para Conta:' + dblContaCredito.Text;
                     FieldByName('previsao_data').Value:= now;
                     FieldByName('previsao_valor').Value:= valFloat;
@@ -256,6 +291,7 @@ begin
       First;
       dblContaCredito.KeyValue:= FieldByName('id').Value;
     end;
+  dblContaDebito.SetFocus;
 end;
 
 function TfrmPrinc.GetSaldo(id: integer): Real;
@@ -267,6 +303,35 @@ begin
       Filtered:= True;
       Result:= StrToFloat(Trim(FieldByName('Saldo').Text));
       Filtered:= False;
+    end;
+end;
+
+function TfrmPrinc.GetEmpresaId(dbl: TDBLookupCombobox): integer;
+begin
+  with DM.aqyEmpresas do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add('select id,nome,obs,criacao_usu_id,criacao_data from empresas where obs=' + IntToStr(dbl.KeyValue));
+      Open;
+      if(RecordCount=1)
+        then Result:= FieldByName('id').Value
+        else
+          begin
+            if(RecordCount>1)
+              then Application.MessageBox('Entradas duplicadas encontradas. Contate o suporte do sistema pelo Email: suporte@registronictec.com.br ou Fone: (34) 3255-6464.','Erro na transação!',MB_ICONERROR + MB_OK)
+              else
+                begin
+                  Insert;
+                  FieldByName('nome').Value:= 'Transferência para Conta:' + dbl.Text;
+                  FieldByName('obs').Value:= IntToStr(dbl.KeyValue);
+                  FieldByName('criacao_usu_id').Value:= User.id;
+                  FieldByName('criacao_data').Value:= now;
+                  Post;
+                  Last;
+                  Result:= FieldByName('id').Value;
+                end;
+          end;
     end;
 end;
 
