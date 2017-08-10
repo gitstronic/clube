@@ -3,11 +3,10 @@ object DM: TDM
   Height = 359
   Width = 537
   object adoConexao: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=SQLNCLI11.1;Persist Security Info=False;User ID=registr' +
       'onic;Initial Catalog=SecullumClubeNet_Clube;Data Source=FREED;In' +
-      'itial File Name="";Server SPN="";password="regis86"'
+      'itial File Name="";Server SPN="";'
     LoginPrompt = False
     Provider = 'SQLNCLI11.1'
     Left = 24
@@ -295,6 +294,72 @@ object DM: TDM
     object aqyPessoasnome: TStringField
       FieldName = 'nome'
       Size = 100
+    end
+  end
+  object aqyRecibos: TADOQuery
+    Connection = adoConexao
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT [id]'
+      '      ,[valor]'
+      '      ,[conta_origem]'
+      '      ,[conta_destino]'
+      '      ,[data_operacao]'
+      '  FROM [SecullumClubeNet_Clube].[dbo].[recibos]')
+    Left = 376
+    Top = 8
+    object aqyRecibosid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object aqyRecibosvalor: TBCDField
+      FieldName = 'valor'
+      Precision = 19
+    end
+    object aqyRecibosconta_origem: TIntegerField
+      FieldName = 'conta_origem'
+    end
+    object aqyRecibosconta_destino: TIntegerField
+      FieldName = 'conta_destino'
+    end
+    object aqyRecibosdata_operacao: TDateTimeField
+      FieldName = 'data_operacao'
+    end
+  end
+  object aqyRecibosPrint: TADOQuery
+    Connection = adoConexao
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      
+        'select id,valor,(select contas_correntes.descricao from contas_c' +
+        'orrentes where contas_correntes.id=conta_origem)as conta_origem,' +
+        '(select contas_correntes.descricao from contas_correntes where c' +
+        'ontas_correntes.id=conta_destino)as conta_destino,data_operacao ' +
+        'from recibos')
+    Left = 376
+    Top = 56
+    object aqyRecibosPrintid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object aqyRecibosPrintvalor: TBCDField
+      FieldName = 'valor'
+      Precision = 19
+    end
+    object aqyRecibosPrintconta_origem: TStringField
+      FieldName = 'conta_origem'
+      ReadOnly = True
+      Size = 50
+    end
+    object aqyRecibosPrintconta_destino: TStringField
+      FieldName = 'conta_destino'
+      ReadOnly = True
+      Size = 50
+    end
+    object aqyRecibosPrintdata_operacao: TDateTimeField
+      FieldName = 'data_operacao'
     end
   end
 end

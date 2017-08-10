@@ -71,6 +71,18 @@ type
     aqyPessoasn_identificador: TStringField;
     aqyPessoasnome: TStringField;
     aqyContasReceberservico_id: TIntegerField;
+    aqyRecibos: TADOQuery;
+    aqyRecibosid: TAutoIncField;
+    aqyRecibosvalor: TBCDField;
+    aqyRecibosconta_origem: TIntegerField;
+    aqyRecibosconta_destino: TIntegerField;
+    aqyRecibosdata_operacao: TDateTimeField;
+    aqyRecibosPrint: TADOQuery;
+    aqyRecibosPrintid: TAutoIncField;
+    aqyRecibosPrintvalor: TBCDField;
+    aqyRecibosPrintconta_origem: TStringField;
+    aqyRecibosPrintconta_destino: TStringField;
+    aqyRecibosPrintdata_operacao: TDateTimeField;
   private
     { Private declarations }
   public
