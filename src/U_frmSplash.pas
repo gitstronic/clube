@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Crypto_TLB;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Crypto_TLB,
+  Vcl.StdCtrls;
 
 type TDBInfo = record
   TipoBanco,Servidor,AutenticacaoWindows,Usuario,Senha,NomeBanco: String;
@@ -14,6 +15,8 @@ type
   TfrmSplash = class(TForm)
     AppStart: TTimer;
     Image1: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure AppStartTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
@@ -39,6 +42,8 @@ var
   Crypt: ICrypto;
 begin
   AppStart.Enabled:= False;
+  Label1.Caption:= 'Versão: ' + VersaoExe(Application.ExeName);
+  Application.ProcessMessages;
   if(CarregaINISecullum('conexao_db.ini')) //Carregar Configurações
     then
       begin
@@ -49,7 +54,7 @@ begin
           with DM.adoConexao do
             begin
               Close;
-              ConnectionString:= 'Provider=SQLNCLI11.1;Persist Security Info=False;User ID=' + DB.Usuario + ';Password=' + DB.Senha + ';Initial Catalog=' + DB.NomeBanco + ';Data Source=' + DB.Servidor + ';Initial File Name="";Server SPN=""';
+              ConnectionString:= 'Provider=SQLOLEDB.1;Password=' + DB.Senha + ';Persist Security Info=True;User ID=' + DB.Usuario + ';Initial Catalog=' + DB.NomeBanco + ';Data Source=' + DB.Servidor;
               Connected:= True;
             end;
           frmSplash.ModalResult:=mrOk;

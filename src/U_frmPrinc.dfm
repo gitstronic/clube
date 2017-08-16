@@ -99,6 +99,7 @@ object frmPrinc: TfrmPrinc
         MaxLength = 20
         TabOrder = 2
         Text = 'R$'
+        OnClick = edtValorClick
         OnEnter = edtValorEnter
         OnExit = edtValorExit
         OnKeyPress = edtValorKeyPress
@@ -280,7 +281,7 @@ object frmPrinc: TfrmPrinc
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42954.582448796290000000
-    ReportOptions.LastChange = 42957.380100347210000000
+    ReportOptions.LastChange = 42957.408773263880000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -334,7 +335,7 @@ object frmPrinc: TfrmPrinc
         Font.Style = [fsBold]
         HAlign = haCenter
         Memo.UTF8W = (
-          'Clube Caixa')
+          'Caixa Clube')
         ParentFont = False
         VAlign = vaCenter
       end
@@ -579,7 +580,7 @@ object frmPrinc: TfrmPrinc
         Font.Style = [fsBold]
         HAlign = haCenter
         Memo.UTF8W = (
-          'Clube Caixa')
+          'Caixa Clube')
         ParentFont = False
         VAlign = vaCenter
       end

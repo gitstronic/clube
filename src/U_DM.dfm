@@ -3,12 +3,13 @@ object DM: TDM
   Height = 359
   Width = 537
   object adoConexao: TADOConnection
+    Connected = True
     ConnectionString = 
-      'Provider=SQLNCLI11.1;Persist Security Info=False;User ID=registr' +
-      'onic;Initial Catalog=SecullumClubeNet_Clube;Data Source=FREED;In' +
-      'itial File Name="";Server SPN="";'
+      'Provider=SQLOLEDB.1;Password=regis86;Persist Security Info=True;' +
+      'User ID=registronic;Initial Catalog=SecullumClubeNet_Clube;Data ' +
+      'Source=freed'
     LoginPrompt = False
-    Provider = 'SQLNCLI11.1'
+    Provider = 'SQLOLEDB.1'
     Left = 24
     Top = 8
   end
@@ -42,8 +43,8 @@ object DM: TDM
     Parameters = <>
     SQL.Strings = (
       
-        'with a as(select conta_corrente_id,sum(pagto_valor) as Saldo fro' +
-        'm contas_receber_pagtos group by conta_corrente_id),'
+        ';with a as(select conta_corrente_id,sum(pagto_valor) as Saldo fr' +
+        'om contas_receber_pagtos group by conta_corrente_id),'
       
         'b as (select conta_corrente_id,sum(valor_total) as Debito from c' +
         'ontas_pagar group by conta_corrente_id),'
