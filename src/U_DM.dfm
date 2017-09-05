@@ -3,7 +3,6 @@ object DM: TDM
   Height = 359
   Width = 537
   object adoConexao: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=regis86;Persist Security Info=True;' +
       'User ID=registronic;Initial Catalog=SecullumClubeNet_Clube;Data ' +
