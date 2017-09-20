@@ -301,12 +301,9 @@ object DM: TDM
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
-      'SELECT [id]'
-      '      ,[valor]'
-      '      ,[conta_origem]'
-      '      ,[conta_destino]'
-      '      ,[data_operacao]'
-      '  FROM [SecullumClubeNet_Clube].[dbo].[recibos]')
+      
+        'SELECT id,valor,conta_origem,conta_destino,data_operacao FROM re' +
+        'cibos')
     Left = 376
     Top = 8
     object aqyRecibosid: TAutoIncField

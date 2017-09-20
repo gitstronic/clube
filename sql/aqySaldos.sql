@@ -1,0 +1,4 @@
+;with a as(select conta_corrente_id,sum(pagto_valor) as Saldo from contas_receber_pagtos where pagto_data>= (select contas_correntes.data_abertura from contas_correntes where id=conta_corrente_id) group by conta_corrente_id),
+b as (select conta_corrente_id,sum(valor_total) as Debito from contas_pagar where vencimento>= (select contas_correntes.data_abertura from contas_correntes where id=conta_corrente_id) group by conta_corrente_id),
+c as(select contas_correntes.id,contas_correntes.descricao as ContaCorrente,coalesce(a.Saldo,0.0) as Credito,coalesce(b.Debito,0.0) as Debito from contas_correntes full join a on contas_correntes.id=a.conta_corrente_id full join b on contas_correntes.id=b.conta_corrente_id)
+select c.id,c.ContaCorrente,(c.Credito-c.Debito) as Saldo from c order by c.id
