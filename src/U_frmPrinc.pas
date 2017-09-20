@@ -374,7 +374,7 @@ begin
         SQL.Add('b as (select conta_corrente_id,sum(valor_total) as Debito from contas_pagar where vencimento>= (select contas_correntes.data_abertura from contas_correntes where id=conta_corrente_id) group by conta_corrente_id),');
         SQL.Add('c as(select contas_correntes.id,contas_correntes.descricao as ContaCorrente,coalesce(a.Saldo,0.0) as Credito,coalesce(b.Debito,0.0) as Debito from contas_correntes full join a on contas_correntes.id=');
         SQL.Add('a.conta_corrente_id full join b on contas_correntes.id=b.conta_corrente_id)');
-        SQL.Add('select c.id,c.ContaCorrente,(c.Credito-c.Debito) as Saldo from c order by c.id)');
+        SQL.Add('select c.id,c.ContaCorrente,(c.Credito-c.Debito) as Saldo from c order by c.id');
       end;
       Open;
       First;
