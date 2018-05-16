@@ -245,11 +245,9 @@ object frmPrinc: TfrmPrinc
     Top = 96
   end
   object DContaDebito: TDataSource
-    DataSet = DM.aqyContaDebito
     Left = 528
   end
   object DContaCredito: TDataSource
-    DataSet = DM.aqyContaCredito
     Left = 528
     Top = 48
   end
@@ -268,20 +266,19 @@ object frmPrinc: TfrmPrinc
     end
   end
   object DServico: TDataSource
-    DataSet = DM.aqyServicos
     Left = 528
     Top = 144
   end
   object frxRecibos: TfrxReport
-    Version = '4.12.2'
+    Version = '4.11.17'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 42954.582448796290000000
-    ReportOptions.LastChange = 42957.408773263880000000
+    ReportOptions.CreateDate = 42954.582448796300000000
+    ReportOptions.LastChange = 42957.408773263900000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -3523,9 +3520,22 @@ object frmPrinc: TfrmPrinc
   object frdRecibos: TfrxDBDataset
     UserName = 'frdRecibos'
     CloseDataSource = False
-    DataSet = DM.aqyRecibosPrint
     BCDToCurrency = False
     Left = 616
     Top = 48
+  end
+  object frxHTMLExport1: TfrxHTMLExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    FixedWidth = True
+    Background = False
+    Centered = False
+    EmptyLines = True
+    Print = False
+    PictureType = gpPNG
+    Left = 608
+    Top = 160
   end
 end

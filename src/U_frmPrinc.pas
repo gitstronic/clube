@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.DBGrids, Data.DB,
   Vcl.StdCtrls, Vcl.Buttons, Vcl.DBCtrls, Vcl.ExtCtrls, Vcl.Mask, Vcl.ActnList,
-  frxClass, frxDBSet;
+  frxClass, frxDBSet, frxExportHTML;
 
 type TCfg = record
   Servico,Pessoa: integer;
@@ -45,6 +45,7 @@ type
     btnCancel: TBitBtn;
     frxRecibos: TfrxReport;
     frdRecibos: TfrxDBDataset;
+    frxHTMLExport1: TfrxHTMLExport;
     procedure btnTransactionClick(Sender: TObject);
     procedure RefreshTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);

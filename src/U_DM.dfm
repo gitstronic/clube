@@ -3,10 +3,11 @@ object DM: TDM
   Height = 359
   Width = 537
   object adoConexao: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=regis86;Persist Security Info=True;' +
-      'User ID=registronic;Initial Catalog=SecullumClubeNet_Clube;Data ' +
-      'Source=freed'
+      'User ID=registronic;Initial Catalog=SecullumClubeNet;Data Source' +
+      '=freed'
     LoginPrompt = False
     Provider = 'SQLOLEDB.1'
     Left = 24
@@ -325,6 +326,7 @@ object DM: TDM
     end
   end
   object aqyRecibosPrint: TADOQuery
+    Active = True
     Connection = adoConexao
     CursorType = ctStatic
     Parameters = <>

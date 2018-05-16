@@ -8,8 +8,8 @@ uses
   U_frmLogin in 'U_frmLogin.pas' {frmLogin},
   U_DM in 'U_DM.pas' {DM: TDataModule},
   Utils in '..\..\Common Files\Utils.pas',
-  Crypto_TLB in 'C:\Users\Projetos\Documents\RAD Studio\9.0\Imports\Crypto_TLB.pas',
-  mscorlib_TLB in 'C:\Users\Projetos\Documents\RAD Studio\9.0\Imports\mscorlib_TLB.pas';
+  Crypto_TLB in '..\..\..\..\Documents\RAD Studio\9.0\Imports\Crypto_TLB.pas',
+  mscorlib_TLB in '..\..\..\..\Documents\RAD Studio\9.0\Imports\mscorlib_TLB.pas';
 
 {$R *.res}
 

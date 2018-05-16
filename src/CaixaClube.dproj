@@ -113,8 +113,8 @@
 				<DesignClass>TDataModule</DesignClass>
 			</DCCReference>
 			<DCCReference Include="..\..\Common Files\Utils.pas"/>
-			<DCCReference Include="C:\Users\Projetos\Documents\RAD Studio\9.0\Imports\Crypto_TLB.pas"/>
-			<DCCReference Include="C:\Users\Projetos\Documents\RAD Studio\9.0\Imports\mscorlib_TLB.pas"/>
+			<DCCReference Include="..\..\..\..\Documents\RAD Studio\9.0\Imports\Crypto_TLB.pas"/>
+			<DCCReference Include="..\..\..\..\Documents\RAD Studio\9.0\Imports\mscorlib_TLB.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
